@@ -1,21 +1,21 @@
 {
-  "name": "telegram-file-streamer-vercel",
-  "version": "1.0.0",
-  "description": "Stream files directly from Telegram to the browser, optimized for Vercel Serverless Functions.",
-  "main": "api/watch.js",
-  "type": "module",
-  "scripts": {
-    "start": "node api/watch.js",
-    "dev": "vercel dev"
-  },
-  "dependencies": {
-    "axios": "^1.6.8",
-    "mime-types": "^2.1.35"
-  },
-  "devDependencies": {
-    "vercel": "^32.2.4"
-  },
-  "engines": {
-    "node": "22.x"
-  }
+    [span_40](start_span)"name": "telegram-file-streamer-vercel",[span_40](end_span)
+    [span_41](start_span)"version": "1.0.0",[span_41](end_span)
+    [span_42](start_span)"description": "Stream files directly from Telegram to the browser, optimized for Vercel Serverless Functions.",[span_42](end_span)
+    [span_43](start_span)"main": "api/watch.js",[span_43](end_span)
+    [span_44](start_span)"type": "module",[span_44](end_span)
+    [span_45](start_span)"scripts": {[span_45](end_span)
+        [span_46](start_span)"start": "node api/watch.js",[span_46](end_span)
+        [span_47](start_span)"dev": "vercel dev"[span_47](end_span)
+    },
+    [span_48](start_span)"dependencies": {[span_48](end_span)
+        [span_49](start_span)"axios": "1.6.8",[span_49](end_span)
+        [span_50](start_span)"mime-types": "2.1.35"[span_50](end_span)
+    },
+    [span_51](start_span)"devDependencies": {[span_51](end_span)
+        [span_52](start_span)"vercel": "32.2.4"[span_52](end_span)
+    },
+    "engines": {
+        [span_53](start_span)"node": "22.x"[span_53](end_span)
+    }
 }
