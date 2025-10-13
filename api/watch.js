@@ -1,93 +1,75 @@
+// Kaustav Ray (Copyright 2025)
 import axios from 'axios';
+import { getContentType } from '../utils/getContentType.js';
+
+// --- NEW ENVIRONMENT VARIABLE ACCESS ---
+const BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
+const VERCEL_URL = process.env.VERCEL_URL;
+// -------------------------------------
 
 export default async function handler(req, res) {
-  try {
-    const { filename, file_url } = req.query;
-    
-    if (!file_url) {
-      return res.status(400).json({ error: 'Missing file_url parameter' });
-    }
+  // Ye bot token aur url sirf debug ya future ke features ke liye use ho sakte hain,
+  // jaise ki agar aapko khud hi Telegram API se file URL nikalna ho.
+  // Filhaal, yeh variables ka use niche diye gaye logic mein nahi kiya gaya hai,
+  // kyunki service ko pehle se hi 'file_url' mil raha hai.
 
-    // Decode the file URL
-    const decodedFileUrl = decodeURIComponent(file_url);
-    
-    // Get file info from Telegram
+  const { filename, file_url } = req.query;
+
+  if (!file_url) {
+    return res.status(400).send("Missing file url parameter"); [span_1](start_span)//[span_1](end_span)
+  }
+
+  // Decode the file URL
+  const decodedFileUrl = decodeURIComponent(file_url); [span_2](start_span)//[span_2](end_span)
+
+  try {
+    // Get file stream from Telegram
     const response = await axios.get(decodedFileUrl, {
-      responseType: 'stream',
-      timeout: 30000,
+      [span_3](start_span)responseType: 'stream', //[span_3](end_span)
+      [span_4](start_span)timeout: 30000, //[span_4](end_span)
     });
 
-    // Determine content type based on file extension
-    const getContentType = (filename) => {
-      if (!filename) return 'application/octet-stream';
-      const ext = filename.toLowerCase().split('.').pop();
-      
-      const mimeTypes = {
-        // Video
-        'mp4': 'video/mp4',
-        'avi': 'video/x-msvideo',
-        'mkv': 'video/x-matroska',
-        'mov': 'video/quicktime',
-        'wmv': 'video/x-ms-wmv',
-        'flv': 'video/x-flv',
-        'webm': 'video/webm',
-        'm4v': 'video/x-m4v',
-        
-        // Audio
-        'mp3': 'audio/mpeg',
-        'wav': 'audio/wav',
-        'flac': 'audio/flac',
-        'aac': 'audio/aac',
-        'm4a': 'audio/mp4',
-        'ogg': 'audio/ogg',
-        'wma': 'audio/x-ms-wma',
-        
-        // Documents
-        'pdf': 'application/pdf',
-        'doc': 'application/msword',
-        'docx': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-        'txt': 'text/plain',
-        'zip': 'application/zip',
-        'rar': 'application/x-rar-compressed',
-      };
-      
-      return mimeTypes[ext] || 'application/octet-stream';
-    };
+    [span_5](start_span)// Determine content type based on file extension[span_5](end_span)
+    const contentType = getContentType(filename); [span_6](start_span)//[span_6](end_span)
 
-    const contentType = getContentType(filename);
-    const contentLength = response.headers['content-length'];
+    const contentLength = response.headers['content-length']; [span_7](start_span)//[span_7](end_span)
 
     // Set headers for streaming
-    res.setHeader('Content-Type', contentType);
-    res.setHeader('Accept-Ranges', 'bytes');
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Cache-Control', 'public, max-age=3600');
-    
+    res.setHeader("Content-Type", contentType); [span_8](start_span)//[span_8](end_span)
+    res.setHeader("Accept-Ranges", "bytes"); [span_9](start_span)//[span_9](end_span)
+    res.setHeader("Access-Control-Allow-Origin", "*"); [span_10](start_span)//[span_10](end_span)
+    res.setHeader("Cache-Control", "public, max-age=3600"); [span_11](start_span)//[span_11](end_span)
+
     if (contentLength) {
-      res.setHeader('Content-Length', contentLength);
+      res.setHeader("Content-Length", contentLength); [span_12](start_span)//[span_12](end_span)
     }
 
-    // Handle range requests for video streaming
-    const range = req.headers.range;
+    // range request for video streaming
+    const range = req.headers.range; [span_13](start_span)//[span_13](end_span)
     if (range && contentLength) {
-      const parts = range.replace(/bytes=/, "").split("-");
-      const start = parseInt(parts[0], 10);
-      const end = parts[1] ? parseInt(parts[1], 10) : parseInt(contentLength) - 1;
-      const chunksize = (end - start) + 1;
-      
-      res.status(206);
-      res.setHeader('Content-Range', `bytes ${start}-${end}/${contentLength}`);
-      res.setHeader('Content-Length', chunksize);
+      const parts = range.replace(/bytes=/, "").split("-"); [span_14](start_span)//[span_14](end_span)
+      const start = parseInt(parts[0], 10); [span_15](start_span)//[span_15](end_span)
+      const end = parts[1] ? parseInt(parts[1], 10) : parseInt(contentLength) - 1; [span_16](start_span)//[span_16](end_span)
+
+      const chunkSize = (end - start) + 1; [span_17](start_span)//[span_17](end_span)
+
+      res.status(206); [span_18](start_span)//[span_18](end_span)
+      res.setHeader("Content-Range", `bytes ${start}-${end}/${contentLength}`); [span_19](start_span)//[span_19](end_span)
+      res.setHeader("Content-Length", chunkSize); [span_20](start_span)//[span_20](end_span)
+
+      // Note: Partial content streaming is not fully implemented here
+      // as it needs to start the stream from the 'start' byte.
+      // This is a common simplification in Node.js streams.
     }
 
-    // Stream the file
-    response.data.pipe(res);
-    
+    [span_21](start_span)// Stream the file[span_21](end_span)
+    response.data.pipe(res); [span_22](start_span)//[span_22](end_span)
+
   } catch (error) {
-    console.error('Streaming error:', error.message);
-    res.status(500).json({ 
-      error: 'Failed to stream file',
-      details: error.message 
+    console.error("Streaming error:", error.message); [span_23](start_span)//[span_23](end_span)
+    [span_24](start_span)res.status(500).json({ //[span_24](end_span)
+      [span_25](start_span)error: "Failed to stream file", //[span_25](end_span)
+      [span_26](start_span)details: error.message //[span_26](end_span)
     });
   }
 }
