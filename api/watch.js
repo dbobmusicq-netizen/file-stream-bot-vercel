@@ -4,7 +4,7 @@ import axios from 'axios';
 import { getContentType } from '../utils/getContentType.js';
 
 // NEW ENVIRONMENT VARIABLE ACCESS (Hardcoded)
-const BOT_TOKEN = "6833588542:AAEVJI2xQzEYGnS1O0qGKT471bWAdOYXeaQ"; // Hardcoded Telegram Bot Token
+const BOT_TOKEN = "6833588542:AAHfb-kNUmT9PVL9EMyqaKD9PjSFjAfgbrA"; // Hardcoded Telegram Bot Token
 const VERCEL_URL = "https://file-stream-bot-vercel.vercel.app/"; // Hardcoded Vercel URL
 
 export default async function handler(req, res) {
