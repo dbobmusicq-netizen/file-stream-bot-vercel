@@ -5,7 +5,7 @@ import { getContentType } from '../utils/getContentType.js';
 
 // NEW ENVIRONMENT VARIABLE ACCESS (Hardcoded)
 const BOT_TOKEN = "6833588542:AAHfb-kNUmT9PVL9EMyqaKD9PjSFjAfgbrA"; // Hardcoded Telegram Bot Token
-const VERCEL_URL = "https://file-stream-bot-vercel.vercel.app/"; // Hardcoded Vercel URL
+const VERCEL_URL = "https://file-stream-bot-vercel-one.vercel.app"; // Hardcoded Vercel URL
 
 export default async function handler(req, res) {
     const { filename, file_url } = req.query;
@@ -19,7 +19,7 @@ export default async function handler(req, res) {
 
     try {
         // Get file stream from Telegram
-        const response = await axios.get(decodedFileUrl, {
+        const response = await axios.get(decodedFileUhttps://file-stream-bot-vercel.vercel.app/rl, {
             responseType: "stream",
             timeout: 30000, // 30s timeout for streaming
         });
